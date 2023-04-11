@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+
 @RestController
 public class UrlController {
 
@@ -16,7 +18,8 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping("/shorten")
-    public String shortenUrl(@RequestBody String originalUrl) {
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String shortenUrl(@RequestBody String originalUrl) throws UnsupportedEncodingException {
         return urlService.shortenUrl(originalUrl);
     }
 

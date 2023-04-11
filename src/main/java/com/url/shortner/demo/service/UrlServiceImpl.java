@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
@@ -46,7 +48,8 @@ public class UrlServiceImpl implements UrlService{
      * @throws NoSuchAlgorithmException
      */
     @Transactional
-    public String shortenUrl(String originalUrl) {
+    public String shortenUrl(String originalUrl) throws UnsupportedEncodingException {
+        originalUrl = URLDecoder.decode(originalUrl, "UTF-8");
         Optional<Url> existingUrl = urlRepository.findByOriginalUrl(originalUrl);
         if (existingUrl.isPresent()) {
             return getURL(existingUrl.get().getShortUrl());
