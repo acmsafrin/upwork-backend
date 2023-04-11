@@ -1,15 +1,13 @@
 package com.url.shortner.demo.controller;
 
-import com.url.shortner.demo.exception.InvalidPayloadException;
 import com.url.shortner.demo.exception.ResourceNotFoundException;
 import com.url.shortner.demo.service.UrlService;
+import com.url.shortner.demo.service.UrlServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.NoSuchAlgorithmException;
 
 @RestController
 public class UrlController {

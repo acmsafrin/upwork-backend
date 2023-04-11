@@ -1,9 +1,8 @@
 package com.url.shortner.demo.controller;
 
 import com.url.shortner.demo.TestRedisConfiguration;
-import com.url.shortner.demo.exception.ResourceNotFoundException;
 import com.url.shortner.demo.repository.UrlRepository;
-import com.url.shortner.demo.service.RedisCacheService;
+import com.url.shortner.demo.service.RedisCacheServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ class UrlControllerTest {
     private int port;
 
     @Autowired
-    RedisCacheService redisCacheService;
+    RedisCacheServiceImpl redisCacheService;
 
     @Autowired
     UrlRepository urlRepository;

@@ -2,11 +2,6 @@ package com.url.shortner.demo.dto;
 
 import java.util.Date;
 
-/**
- * @author Shamalka Nilaweera
- * @version 1.0
- * @created 29-11-2022
- */
 public class ErrorResponseModel {
 
     private Date timeStamp;

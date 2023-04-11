@@ -2,20 +2,12 @@ package com.url.shortner.demo.service;
 
 import com.url.shortner.demo.entity.Url;
 import com.url.shortner.demo.repository.UrlRepository;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +18,7 @@ class UrlServiceTest {
     UrlRepository urlRepository;
 
     @Autowired
-    UrlService urlService;
+    UrlServiceImpl urlService;
 
     @Test
     void deleteExpiredUrls() {

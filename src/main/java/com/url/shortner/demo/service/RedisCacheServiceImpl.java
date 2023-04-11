@@ -12,7 +12,7 @@ import java.time.Instant;
 
 
 @Service
-public class RedisCacheService {
+public class RedisCacheServiceImpl implements CacheService {
 
     @Autowired
     private RedisTemplate redisTemplate;
