@@ -1,5 +1,7 @@
 package com.url.shortner.demo.controller;
 
+import com.url.shortner.demo.exception.InvalidPayloadException;
+import com.url.shortner.demo.exception.ResourceNotFoundException;
 import com.url.shortner.demo.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,19 +18,17 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping("/shorten")
-    public String shortenUrl(@RequestBody String originalUrl) throws NoSuchAlgorithmException {
+    public String shortenUrl(@RequestBody String originalUrl) throws  InvalidPayloadException {
         return urlService.shortenUrl(originalUrl);
     }
 
     @GetMapping("/{shortUrl}")
-    public ResponseEntity<Void> expandUrl(@PathVariable String shortUrl) {
+    public ResponseEntity<Void> expandUrl(@PathVariable String shortUrl) throws ResourceNotFoundException {
         String originalUrl = urlService.expandUrl(shortUrl);
-        if (originalUrl != null) {
-            return ResponseEntity.status(HttpStatus.FOUND)
+        return ResponseEntity.status(HttpStatus.FOUND)
                     .header(HttpHeaders.LOCATION, originalUrl)
                     .build();
-        }
-        return ResponseEntity.notFound().build();
+
     }
 
 }

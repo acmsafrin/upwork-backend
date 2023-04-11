@@ -16,7 +16,7 @@ retention:
         days: 2
 
 base:
-    url: http://localhost:${server.port}
+    url: http://localhost
 
 token:
     secret: jguy5675hghgtrljkh

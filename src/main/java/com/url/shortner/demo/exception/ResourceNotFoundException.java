@@ -1,12 +1,8 @@
 package com.url.shortner.demo.exception;
 
-/**
- * @author Shamalka Nilaweera
- * @version 1.0
- * @created 29-11-2022
- */
 
-public class ResourceNotFoundException extends RuntimeException{
+
+public class ResourceNotFoundException extends Exception{
 
     private static final long serialVersionUID = 1L;
 

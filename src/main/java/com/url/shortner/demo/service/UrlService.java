@@ -1,5 +1,6 @@
 package com.url.shortner.demo.service;
 
+import com.url.shortner.demo.exception.InvalidPayloadException;
 import com.url.shortner.demo.exception.ResourceNotFoundException;
 import com.url.shortner.demo.repository.UrlRepository;
 import com.url.shortner.demo.entity.Url;
@@ -7,6 +8,7 @@ import com.url.shortner.demo.util.UrlShortener;
 import com.url.shortner.demo.util.UrlShortenerV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,9 @@ public class UrlService {
     @Value("${base.url}")
     private String BASE_URL;
 
+    @Value("${server.port}")
+    private int port;
+
     @Value("${retention.period.days}")
     private long RETENTION_PERIOD_DAYS;
 
@@ -42,10 +47,11 @@ public class UrlService {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String shortenUrl(String originalUrl) throws NoSuchAlgorithmException {
+    public String shortenUrl(String originalUrl) throws InvalidPayloadException {
+
         Optional<Url> existingUrl = urlRepository.findByOriginalUrl(originalUrl);
         if (existingUrl.isPresent()) {
-            return BASE_URL + existingUrl.get().getShortUrl();
+            return getURL(existingUrl.get().getShortUrl());
         }
 
         String shortUrl = UrlShortener.shorten(originalUrl);
@@ -54,8 +60,10 @@ public class UrlService {
         //Add to the cache (REDIS)
         redisCacheService.put(shortUrl,url);
 
-        return BASE_URL + shortUrl;
+        return getURL(shortUrl);
     }
+
+
 
 
     /**
@@ -63,7 +71,7 @@ public class UrlService {
      * @param shortUrl
      * @return
      */
-    public String expandUrl(String shortUrl) {
+    public String expandUrl(String shortUrl) throws ResourceNotFoundException {
         //Key the url from Cache
         Url cache=  redisCacheService.get(shortUrl);
         if(cache!=null){
@@ -73,13 +81,12 @@ public class UrlService {
         }
 
         Optional<List<Url>> url = urlRepository.findByShortUrl(shortUrl);
-        if (url.isPresent()) {
+        if (url.isPresent() && !url.get().isEmpty()) {
             Url urlEntity = url.get().get(0);
             updateAccess(urlEntity);
             return urlEntity.getOriginalUrl();
         }
 
-        //TODO
         //Throw not found exception
         throw new ResourceNotFoundException("The url is not found "+shortUrl);
 
@@ -101,6 +108,9 @@ public class UrlService {
 
     }
 
+    private String getURL(String shortUrl) {
+        return BASE_URL + ":" + port + "/" + shortUrl;
+    }
 
     private void updateAccess(Url url) {
 

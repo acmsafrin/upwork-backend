@@ -37,7 +37,7 @@ spring-doc:
   version: 1.0
 
 base:
-  url: http://localhost:${server.port}
+  url: http://localhost
 
 retention:
   period:
