@@ -1,3 +1,5 @@
+server:
+    port: 8080
 spring:
     main:
         allow-bean-definition-overriding: true
@@ -5,7 +7,16 @@ spring:
 spring-doc:
     version: 1.0
 
+redis:
+    db-url: localhost
+    port: 6379
 
+retention:
+    period:
+        days: 2
+
+base:
+    url: http://localhost:${server.port}
 
 token:
     secret: jguy5675hghgtrljkh

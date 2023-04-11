@@ -36,6 +36,13 @@ redis:
 spring-doc:
   version: 1.0
 
+base:
+  url: http://localhost:${server.port}
+
+retention:
+  period:
+    days: 2
+
 logging:
   level:
     ROOT: INFO

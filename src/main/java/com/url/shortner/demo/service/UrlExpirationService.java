@@ -7,7 +7,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 
-
+/**
+ * Schedular for expiring unused urls
+ */
 @Service
 public class UrlExpirationService {
 
