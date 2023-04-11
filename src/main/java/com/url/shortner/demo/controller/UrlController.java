@@ -2,7 +2,6 @@ package com.url.shortner.demo.controller;
 
 import com.url.shortner.demo.exception.ResourceNotFoundException;
 import com.url.shortner.demo.service.UrlService;
-import com.url.shortner.demo.service.UrlServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
