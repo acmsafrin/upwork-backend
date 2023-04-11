@@ -1,0 +1,15 @@
+spring:
+    main:
+        allow-bean-definition-overriding: true
+
+spring-doc:
+    version: 1.0
+
+
+
+token:
+    secret: jguy5675hghgtrljkh
+
+
+
+    # for testing
