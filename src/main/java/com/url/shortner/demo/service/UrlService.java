@@ -6,12 +6,14 @@ import com.url.shortner.demo.repository.UrlRepository;
 import com.url.shortner.demo.entity.Url;
 import com.url.shortner.demo.util.UrlShortener;
 import com.url.shortner.demo.util.UrlShortenerV2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UrlService {
 
     @Autowired
@@ -47,8 +50,8 @@ public class UrlService {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String shortenUrl(String originalUrl) throws InvalidPayloadException {
-
+    @Transactional
+    public String shortenUrl(String originalUrl) {
         Optional<Url> existingUrl = urlRepository.findByOriginalUrl(originalUrl);
         if (existingUrl.isPresent()) {
             return getURL(existingUrl.get().getShortUrl());
@@ -97,11 +100,13 @@ public class UrlService {
      * This method will be used to clear expired records.
      * This will be called by schedular.
      */
+    @Transactional
     public void deleteExpiredUrls() {
         Instant expiryDate = Instant.now().minus(Duration.ofDays(RETENTION_PERIOD_DAYS));
 
         //Remove from DB
         List<Url> expiredUrls = urlRepository.findByLastAccessedDateBefore(expiryDate);
+
         urlRepository.deleteAll(expiredUrls);
 
         //No need to remove from cache as expiry time is set when setting cache.
@@ -112,6 +117,7 @@ public class UrlService {
         return BASE_URL + ":" + port + "/" + shortUrl;
     }
 
+    @Transactional
     private void updateAccess(Url url) {
 
         url.setLastAccessedDate(Instant.now());

@@ -9,11 +9,11 @@ spring-doc:
 
 redis:
     db-url: localhost
-    port: 6379
+    port: 6370
 
 retention:
     period:
-        days: 2
+        days: 1
 
 base:
     url: http://localhost

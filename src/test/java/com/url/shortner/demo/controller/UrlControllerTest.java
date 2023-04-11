@@ -1,8 +1,12 @@
 package com.url.shortner.demo.controller;
 
+import com.url.shortner.demo.TestRedisConfiguration;
 import com.url.shortner.demo.exception.ResourceNotFoundException;
+import com.url.shortner.demo.repository.UrlRepository;
+import com.url.shortner.demo.service.RedisCacheService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -14,7 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+        ,classes = TestRedisConfiguration.class)
 class UrlControllerTest {
 
     private static final String TEST_URL = "https://www.example.com";
@@ -24,6 +29,12 @@ class UrlControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    RedisCacheService redisCacheService;
+
+    @Autowired
+    UrlRepository urlRepository;
 
     private static RestTemplate restTemplate;
 
@@ -42,6 +53,37 @@ class UrlControllerTest {
         assertNotNull(shortUrl);
 
     }
+
+    @Test
+    public void shortenUrl_verifyRedisHasTheValue() {
+        String url = String.format(BASE_URL, port) + SHORTEN_ENDPOINT;
+        ResponseEntity<String> response = restTemplate.postForEntity(url, TEST_URL, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        String shortUrl = response.getBody();
+        assertNotNull(shortUrl);
+
+        String[] splitBySlash=shortUrl.split("/");
+        String param=splitBySlash[splitBySlash.length-1];
+
+        assertNotNull(redisCacheService.get(param));
+
+    }
+
+    @Test
+    public void shortenUrl_verifyMongoHasTheValue() {
+        String url = String.format(BASE_URL, port) + SHORTEN_ENDPOINT;
+        ResponseEntity<String> response = restTemplate.postForEntity(url, TEST_URL, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        String shortUrl = response.getBody();
+        assertNotNull(shortUrl);
+
+        String[] splitBySlash=shortUrl.split("/");
+        String param=splitBySlash[splitBySlash.length-1];
+
+        assertNotNull(urlRepository.findByShortUrl(param));
+
+    }
+
 
 
 

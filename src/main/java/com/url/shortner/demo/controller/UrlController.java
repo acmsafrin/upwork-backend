@@ -18,7 +18,7 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping("/shorten")
-    public String shortenUrl(@RequestBody String originalUrl) throws  InvalidPayloadException {
+    public String shortenUrl(@RequestBody String originalUrl) {
         return urlService.shortenUrl(originalUrl);
     }
 
