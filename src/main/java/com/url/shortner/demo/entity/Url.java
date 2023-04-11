@@ -27,8 +27,5 @@ public class Url extends AuditableMongo<String> implements Serializable {
     @Column(nullable = false)
     private Instant lastAccessedDate;
 
-    @Column(nullable = false)
-    private Integer accessCount;
-
 
 }

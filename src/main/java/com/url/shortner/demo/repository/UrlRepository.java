@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UrlRepository extends MongoRepository<Url, String> {
 
-    Optional<Url> findByShortUrl(String shortUrl);
+    Optional<List<Url>> findByShortUrl(String shortUrl);
 
     Optional<Url> findByOriginalUrl(String originalUrl);
 
