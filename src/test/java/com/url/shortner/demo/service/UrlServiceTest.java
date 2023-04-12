@@ -42,4 +42,26 @@ class UrlServiceTest {
         assertTrue(urlRepository.findByShortUrl("s2").get().isEmpty());
 
     }
+
+    @Test
+    void deleteNonExpiredUrls() {
+        Url url1=Url.builder().originalUrl("t3")
+                .shortUrl("s3")
+                .lastAccessedDate(Instant.now())
+                .build();
+
+        Url url2=Url.builder().originalUrl("t4")
+                .shortUrl("s4")
+                .lastAccessedDate(Instant.now())
+                .build();
+
+        urlRepository.save(url1);
+        urlRepository.save(url2);
+
+        urlService.deleteExpiredUrls();
+
+        assertFalse(urlRepository.findByShortUrl("s3").get().isEmpty());
+        assertFalse(urlRepository.findByShortUrl("s4").get().isEmpty());
+
+    }
 }

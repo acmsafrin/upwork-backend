@@ -47,7 +47,6 @@ public class UrlServiceImpl implements UrlService{
      * @return
      * @throws NoSuchAlgorithmException
      */
-    @Transactional
     public String shortenUrl(String originalUrl) throws UnsupportedEncodingException {
         originalUrl = URLDecoder.decode(originalUrl, "UTF-8");
         Optional<Url> existingUrl = urlRepository.findByOriginalUrl(originalUrl);
@@ -98,7 +97,7 @@ public class UrlServiceImpl implements UrlService{
      * This method will be used to clear expired records.
      * This will be called by schedular.
      */
-    @Transactional
+
     public void deleteExpiredUrls() {
         Instant expiryDate = Instant.now().minus(Duration.ofDays(RETENTION_PERIOD_DAYS));
 
@@ -115,7 +114,7 @@ public class UrlServiceImpl implements UrlService{
         return BASE_URL + ":" + port + "/" + shortUrl;
     }
 
-    @Transactional
+
     private void updateAccess(Url url) {
 
         url.setLastAccessedDate(Instant.now());
