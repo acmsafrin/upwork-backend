@@ -15,7 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Url extends AuditableMongo<String> implements Serializable {
+public class Url  implements Serializable {
 
     @Id
     private String id;
