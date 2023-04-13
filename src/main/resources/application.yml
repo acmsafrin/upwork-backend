@@ -46,3 +46,6 @@ retention:
 logging:
   level:
     ROOT: INFO
+
+token:
+  secret: jguy5675hghgtrljkh
